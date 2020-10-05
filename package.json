@@ -30,7 +30,7 @@
   "scripts": {
     "build": "webpack --mode production --display-modules"
   },
-  "version": "1.0.0",
+  "version": "0.1.0",
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
