@@ -38,9 +38,9 @@ const range = ['AA', 'KK', 'QQ', 'AKs', 'AQs'];
   onMouseEnter={combo => console.log(`onMouseEnter on ${combo}`)}
   onClick={combo => console.log(`onClick on ${combo}`)}
   comboStyle={(combo) => ({
-    background: range.indexOf(combo !== -1) ? "green" : "grey"
+    background: range.indexOf(combo) !== -1 ? "lightgreen" : "lightgrey"
   })}
-  comboSubtext={(combo) => range.indexOf(combo !== -1) ? "100%" : ""}
+  comboSubtext={(combo) => range.indexOf(combo) !== -1 ? "100%" : "0%"}
   renderItem={(combo, styles, comboSubtext, showText, colorize) => (
     <div
       style={{
