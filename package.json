@@ -28,7 +28,7 @@
     "react"
   ],
   "scripts": {
-    "build": "webpack --mode production --display-modules"
+    "build": "webpack --mode production"
   },
   "version": "0.1.1",
   "devDependencies": {
