@@ -73,7 +73,7 @@ const ComboRow = React.memo(
       {row.map((combo, j) => (
         <div
           className="hand-matrix-cell"
-          style={{ flexGrow: 1 }}
+          style={{ flex: "1 1 0px" }}
           onClick={() => onClick && onClick(combo)}
           onMouseUp={() => onMouseUp && onMouseUp(combo)}
           onMouseDown={() => onMouseDown && onMouseDown(combo)}
