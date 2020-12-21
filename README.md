@@ -37,11 +37,11 @@ const range = ['AA', 'KK', 'QQ', 'AKs', 'AQs'];
     background: range.indexOf(combo) !== -1 ? "lightgreen" : "lightgrey"
   })}
   comboSubtext={(combo) => range.indexOf(combo) !== -1 ? "100%" : "0%"}
-  onSelect={combo => console.log(`mouseDown on ${combo}`)}
-  onPointerDown={combo => console.log(`mouseDown on ${combo}`)}
-  onPointerUp={combo => console.log(`mouseDown on ${combo}`)}
-  onPointerEnter={combo => console.log(`onMouseEnter on ${combo}`)}
-  onPointerMove={combo => console.log(`onMouseEnter on ${combo}`)}
+  onSelect={combo => console.log(`selected ${combo}`)}
+  onPointerDown={combo => console.log(`pointerDown on ${combo}`)}
+  onPointerUp={combo => console.log(`pointerUp on ${combo}`)}
+  onPointerEnter={combo => console.log(`pointerEnter on ${combo}`)}
+  onPointerMove={combo => console.log(`pointerMove on ${combo}`)}
 />
 ```
 
