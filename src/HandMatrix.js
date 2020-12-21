@@ -75,9 +75,9 @@ const ComboRow = React.memo(
           className="hand-matrix-cell"
           style={{ flex: "1 1 0px" }}
           onClick={() => onClick && onClick(combo)}
-          onMouseUp={() => onMouseUp && onMouseUp(combo)}
-          onMouseDown={() => onMouseDown && onMouseDown(combo)}
-          onMouseEnter={() => onMouseEnter && onMouseEnter(combo)}
+          onPointerUp={() => onMouseUp && onMouseUp(combo)}
+          onPointerDown={() => onMouseDown && onMouseDown(combo)}
+          onPointerEnter={() => onMouseEnter && onMouseEnter(combo)}
           key={j}
         >
           <ComboTile
