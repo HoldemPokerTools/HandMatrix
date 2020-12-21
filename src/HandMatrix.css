@@ -1,6 +1,11 @@
 .hand-matrix {
   text-align: center;
-  user-select: none; 
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  touch-action: none;
 }
 
 .hand-matrix-row {
@@ -15,6 +20,7 @@
   border: 1px solid grey;
   display: inline-block;
   font-size: 1em;
+  touch-action: none;
 }
 
 @media screen and (max-width: 992px) {

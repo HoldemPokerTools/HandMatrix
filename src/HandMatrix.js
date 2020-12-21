@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import "./HandMatrix.css";
 
@@ -23,26 +23,6 @@ const chunk = (arr, size) =>
     arr.slice(i * size, i * size + size)
   );
 
-const defaultRender = (combo, styles, comboSubtext, showText, colorize) => (
-  <div
-    className={colorize ? getComboClassName(combo) : null}
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      ...styles,
-    }}
-  >
-    {showText && (
-      <>
-        <div style={{ flexGrow: 1 }} type="keyboard">
-          {combo}
-        </div>
-        <div>{comboSubtext}</div>
-      </>
-    )}
-  </div>
-);
-
 const ComboTile = React.memo(
   ({
     combo,
@@ -50,45 +30,54 @@ const ComboTile = React.memo(
     comboSubtext = "",
     showText = true,
     colorize = true,
-    renderItem = defaultRender,
   }) => {
-    return renderItem(combo, styles, comboSubtext, showText, colorize);
+    return (
+      <div
+        data-combo={combo}
+        className="hand-matrix-cell"
+        style={{ flex: "1 1 0px" }}
+      >
+        <div
+          data-combo={combo}
+          className={colorize ? getComboClassName(combo) : null}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            ...styles,
+          }}
+        >
+          {showText && (
+            <>
+              <div data-combo={combo} style={{ flexGrow: 1 }} type="keyboard">
+                {combo}
+              </div>
+              <div data-combo={combo}>{comboSubtext}</div>
+            </>
+          )}
+        </div>
+      </div>
+    );
   }
 );
 
 const ComboRow = React.memo(
   ({
     row,
-    onClick,
-    onMouseUp,
-    onMouseDown,
-    onMouseEnter,
     comboStyle,
-    renderItem,
     comboSubtext,
     showText,
     colorize,
   }) => (
     <div className="hand-matrix-row">
       {row.map((combo, j) => (
-        <div
-          className="hand-matrix-cell"
-          style={{ flex: "1 1 0px" }}
-          onClick={() => onClick && onClick(combo)}
-          onPointerUp={() => onMouseUp && onMouseUp(combo)}
-          onPointerDown={() => onMouseDown && onMouseDown(combo)}
-          onPointerEnter={() => onMouseEnter && onMouseEnter(combo)}
+        <ComboTile
           key={j}
-        >
-          <ComboTile
-            combo={combo}
-            showText={showText}
-            comboSubtext={comboSubtext ? comboSubtext(combo) : ""}
-            styles={comboStyle ? comboStyle(combo) : {}}
-            colorize={colorize}
-            renderItem={renderItem}
-          />
-        </div>
+          combo={combo}
+          showText={showText}
+          comboSubtext={comboSubtext ? comboSubtext(combo) : ""}
+          styles={comboStyle ? comboStyle(combo) : {}}
+          colorize={colorize}
+        />
       ))}
     </div>
   )
@@ -99,17 +88,40 @@ const ComboRow = React.memo(
  */
 function HandMatrix({
   comboSubtext,
-  renderItem,
   comboStyle,
-  onClick,
-  onMouseUp,
-  onMouseDown,
-  onMouseEnter,
+  onSelect,
+  onPointerDown,
+  onPointerUp,
+  onPointerEnter,
+  onPointerMove,
   showText,
   colorize,
 }) {
+  const [currentlyPointingAt, setCurrentlyPointingAt] = useState(undefined);
+  const getComboForPointerEvent = (e) => document.elementFromPoint(e.clientX, e.clientY).dataset.combo;
+  const comboEventDispatcher = fn => e => {
+    if (!fn) return;
+    const combo = getComboForPointerEvent(e);
+    if (combo && combos.indexOf(combo) !== -1) {
+      fn && fn(combo)
+    }
+  }
+
   return (
-    <div className={`hand-matrix ${onClick || onMouseDown ? "selectable" : "unselectable"}`}>
+    <div
+      className={`hand-matrix ${onSelect || onPointerDown ? "selectable" : "unselectable"}`}
+      onClick={comboEventDispatcher(onSelect)}
+      onPointerUp={comboEventDispatcher(onPointerUp)}
+      onPointerDown={comboEventDispatcher(onPointerDown)}
+      onPointerMove={comboEventDispatcher((combo) => {
+        onPointerMove && onPointerMove(combo);
+        if (combo !== currentlyPointingAt) {
+          setCurrentlyPointingAt(combo)
+          // Note: This is used instead of onPointerEnter for Safari support
+          onPointerEnter && onPointerEnter(combo)
+        }
+      })}
+    >
       {chunk(combos, 13).map((row, i) => (
         <ComboRow
           key={i}
@@ -117,12 +129,7 @@ function HandMatrix({
           comboSubtext={comboSubtext}
           comboStyle={comboStyle}
           row={row}
-          onClick={onClick}
-          onMouseUp={onMouseUp}
-          onMouseDown={onMouseDown}
-          onMouseEnter={onMouseEnter}
           colorize={colorize}
-          renderItem={renderItem}
         />
       ))}
     </div>
@@ -158,14 +165,6 @@ HandMatrix.propTypes = {
    */
   comboSubtext: PropTypes.func,
   /**
-   * A render function to use to render the contents of each tile.
-   * The function will be called with the following args:
-   * combo, styles, comboSubtext, showText, colorize
-   * where styles and comboSubtext are the result of the comboStyle
-   * and comboSubtext prop functions. 
-   */
-  renderItem: PropTypes.func,
-  /**
    * Function which receives the combo (e.g. AKo) and must return
    * an object containing the styles to apply to the matrix tile
    * for that combo e.g. {background: "#FFFFFF"}. Useful for
@@ -173,25 +172,30 @@ HandMatrix.propTypes = {
    */
   comboStyle: PropTypes.func,
   /**
-   * Click event handler for a combo tile. Will be called with
+   * Click/touch event handler for a combo tile. Will be called with
    * combo e.g. AKo
    */
-  onClick: PropTypes.func,
+  onSelect: PropTypes.func,
   /**
-   * Mouse up event handler for a combo tile. Will be called with
+   * Pointer up event handler for a combo tile. Will be called with
    * combo e.g. AKo
    */
-  onMouseUp: PropTypes.func,
+  onPointerUp: PropTypes.func,
   /**
-   * Mouse down event handler for a combo tile. Will be called with
+   * Pointer down event handler for a combo tile. Will be called with
    * combo e.g. AKo
    */
-  onMouseDown: PropTypes.func,
+  onPointerDown: PropTypes.func,
   /**
-   * Mouseenter event handler for a combo tile. Will be called with
+   * Pointer enter event handler for a combo tile. Will be called with
    * combo e.g. AKo
    */
-  onMouseEnter: PropTypes.func,
+  onPointerEnter: PropTypes.func,
+  /**
+   * Pointer move event handler for a combo tile. Will be called with
+   * combo e.g. AKo
+   */
+  onPointerMove: PropTypes.func,
 };
 
 HandMatrix.defaultProps = {

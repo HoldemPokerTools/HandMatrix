@@ -33,32 +33,15 @@ const range = ['AA', 'KK', 'QQ', 'AKs', 'AQs'];
 
 <HandMatrix
   colorize={false}
-  onMouseDown={combo => console.log(`mouseDown on ${combo}`)}
-  onMouseUp={combo => console.log(`mouseDown on ${combo}`)}
-  onMouseEnter={combo => console.log(`onMouseEnter on ${combo}`)}
-  onClick={combo => console.log(`onClick on ${combo}`)}
   comboStyle={(combo) => ({
     background: range.indexOf(combo) !== -1 ? "lightgreen" : "lightgrey"
   })}
   comboSubtext={(combo) => range.indexOf(combo) !== -1 ? "100%" : "0%"}
-  renderItem={(combo, styles, comboSubtext, showText, colorize) => (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        ...styles,
-      }}
-    >
-      {showText && (
-        <>
-          <div style={{ flexGrow: 1 }} type="keyboard">
-            {combo}
-          </div>
-          <div>{comboSubtext}</div>
-        </>
-      )}
-    </div>
-  )}
+  onSelect={combo => console.log(`mouseDown on ${combo}`)}
+  onPointerDown={combo => console.log(`mouseDown on ${combo}`)}
+  onPointerUp={combo => console.log(`mouseDown on ${combo}`)}
+  onPointerEnter={combo => console.log(`onMouseEnter on ${combo}`)}
+  onPointerMove={combo => console.log(`onMouseEnter on ${combo}`)}
 />
 ```
 
@@ -69,15 +52,15 @@ and associated [GitHub repository](https://github.com/HoldemPokerTools/RangeAssi
 
 Prop | Type | Default | Required | Description
 ---- | :----: | :-------: | :--------: | -----------
-**colorize** | `Boolean` | `true` | :x: | Whether to apply default colors to the hand matrix to distinguish pairs vs offsuit vs suited hands. The result of the comboStyle function will override the default colors.
+**colorize** | `Boolean` | `true` | :x: | Whether to apply default colors to the hand matrix to distinguish pairs vs offsuit vs suited hands. The result of the comboStyle function will override these default colors.
 **comboStyle** | `Function` |  | :x: | Function which receives the combo (e.g. AKo) and must return an object containing the styles to apply to the matrix tile for that combo e.g. {background: "#FFFFFF"}. Useful for displaying ranges.
+**showText** | `Boolean` | `true` | :x: | Whether to show the text in the combo cells
 **comboSubtext** | `Function` |  | :x: | Function which receives the combo (e.g. AKo) and must return the text or React components to display beneath the combo text. Default is for no text to be displayed. Useful for displaying information such as combo equity
-**onClick** | `Function` |  | :x: | Click event handler for a combo tile. Will be called with combo e.g. AKo
-**onMouseDown** | `Function` |  | :x: | Mouse down event handler for a combo tile. Will be called with combo e.g. AKo
-**onMouseEnter** | `Function` |  | :x: | Mouseenter event handler for a combo tile. Will be called with combo e.g. AKo
-**onMouseUp** | `Function` |  | :x: | Mouse up event handler for a combo tile. Will be called with combo e.g. AKo
-**renderItem** | `Function` |  | :x: | A render function to use to render the contents of each tile. The function will be called with the following args: combo, styles, comboSubtext, showText, colorize where styles and comboSubtext are the result of the comboStyle and comboSubtext prop functions.
-**showText** | `Boolean` | `true` | :x: | Whether to show the text in the combo tyles
+**onSelect** | `Function` |  | :x: | Click event handler for a combo tile. Will be called with combo e.g. AKo
+**onPointerDown** | `Function` |  | :x: | Pointer down event handler for a combo tile. Will be called with combo e.g. AKo
+**onPointerEnter** | `Function` |  | :x: | Pointer enter event handler for a combo tile. Will be called with combo e.g. AKo
+**onPointerMove** | `Function` |  | :x: | Pointer move event handler for a combo tile. Will be called with combo e.g. AKo
+**onPointerUp** | `Function` |  | :x: | Pointer up event handler for a combo tile. Will be called with combo e.g. AKo
 
 ## Support
 
