@@ -97,7 +97,7 @@ function HandMatrix({
   showText,
   colorize,
 }) {
-  const [currentlyPointingAt, setCurrentlyPointingAt] = useState(undefined);
+  let currentlyPointingAt;
   const getComboForPointerEvent = (e) => document.elementFromPoint(e.clientX, e.clientY).dataset.combo;
   const comboEventDispatcher = fn => e => {
     if (!fn) return;
@@ -116,7 +116,7 @@ function HandMatrix({
       onPointerMove={comboEventDispatcher((combo) => {
         onPointerMove && onPointerMove(combo);
         if (combo !== currentlyPointingAt) {
-          setCurrentlyPointingAt(combo)
+          currentlyPointingAt = combo;
           // Note: This is used instead of onPointerEnter for Safari support
           onPointerEnter && onPointerEnter(combo)
         }
