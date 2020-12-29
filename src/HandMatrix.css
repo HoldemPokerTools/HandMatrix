@@ -13,14 +13,19 @@
   margin: 0;
   box-sizing: border-box;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  width: 100%;
 }
 
 .hand-matrix-cell {
   border: 1px solid grey;
   display: inline-block;
-  font-size: 1em;
   touch-action: none;
+  font-size: 1rem;
+  width: 7.691%;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 992px) {

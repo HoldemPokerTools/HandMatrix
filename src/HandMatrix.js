@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
+import { Textfit } from 'react-textfit';
+
 import "./HandMatrix.css";
 
 export const combos = [
@@ -25,17 +27,16 @@ const chunk = (arr, size) =>
 
 const ComboTile = React.memo(
   ({
-    combo,
-    styles = {},
-    comboSubtext = "",
-    showText = true,
-    colorize = true,
-  }) => {
+     combo,
+     styles = {},
+     comboSubtext = "",
+     showText = true,
+     colorize = true,
+   }) => {
     return (
       <div
         data-combo={combo}
         className="hand-matrix-cell"
-        style={{ flex: "1 1 0px" }}
       >
         <div
           data-combo={combo}
@@ -48,7 +49,7 @@ const ComboTile = React.memo(
         >
           {showText && (
             <>
-              <div data-combo={combo} style={{ flexGrow: 1 }} type="keyboard">
+              <div data-combo={combo} type="keyboard">
                 {combo}
               </div>
               <div data-combo={combo}>{comboSubtext}</div>
@@ -62,12 +63,12 @@ const ComboTile = React.memo(
 
 const ComboRow = React.memo(
   ({
-    row,
-    comboStyle,
-    comboSubtext,
-    showText,
-    colorize,
-  }) => (
+     row,
+     comboStyle,
+     comboSubtext,
+     showText,
+     colorize,
+   }) => (
     <div className="hand-matrix-row">
       {row.map((combo, j) => (
         <ComboTile
@@ -83,22 +84,52 @@ const ComboRow = React.memo(
   )
 );
 
+// function assertElementFitsWidth(el, width) {
+//   // -1: temporary bugfix, will be refactored soon
+//   return el.scrollWidth - 1 <= width;
+// }
+// function assertElementFitsHeight(el, height) {
+//   // -1: temporary bugfix, will be refactored soon
+//   return el.scrollHeight - 1 <= height;
+// }
+// const testPrimary = () => assertElementFitsHeight(wrapper, originalHeight);
+// const testSecondary = () => assertElementFitsWidth(wrapper, originalWidth)
+// function innerHeight(el) {
+//   const style = window.getComputedStyle(el, null);
+//   if (!style) return el.clientHeight;
+//   return (
+//     el.clientHeight -
+//     parseInt(style.getPropertyValue("padding-top"), 10) -
+//     parseInt(style.getPropertyValue("padding-bottom"), 10)
+//   );
+// }
+// function innerWidth(el) {
+//   const style = window.getComputedStyle(el, null);
+//   // Hidden iframe in Firefox returns null, https://github.com/malte-wessel/react-textfit/pull/34
+//   if (!style) return el.clientWidth;
+//   return (
+//     el.clientWidth -
+//     parseInt(style.getPropertyValue("padding-left"), 10) -
+//     parseInt(style.getPropertyValue("padding-right"), 10)
+//   );
+// }
+
 /**
  * Texas Hold'em hand matrix component
  */
 function HandMatrix({
-  comboSubtext,
-  comboStyle,
-  onSelect,
-  onPointerDown,
-  onPointerUp,
-  onPointerEnter,
-  onPointerMove,
-  showText,
-  colorize,
-}) {
+                      comboSubtext,
+                      comboStyle,
+                      onSelect,
+                      onPointerDown,
+                      onPointerUp,
+                      onPointerEnter,
+                      onPointerMove,
+                      showText,
+                      colorize,
+                    }) {
   let currentlyPointingAt;
-  const getComboForPointerEvent = (e) => document.elementFromPoint(e.clientX, e.clientY).dataset.combo;
+  const getComboForPointerEvent = (e) => document.elementFromPoint(e.clientX, e.clientY)?.dataset.combo;
   const comboEventDispatcher = fn => e => {
     if (!fn) return;
     const combo = getComboForPointerEvent(e);
