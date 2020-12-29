@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Textfit } from 'react-textfit';
 
 import "./HandMatrix.css";
 
@@ -49,7 +48,7 @@ const ComboTile = React.memo(
         >
           {showText && (
             <>
-              <div data-combo={combo} type="keyboard">
+              <div data-combo={combo}>
                 {combo}
               </div>
               <div data-combo={combo}>{comboSubtext}</div>
