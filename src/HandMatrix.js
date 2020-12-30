@@ -139,10 +139,11 @@ function HandMatrix({
 
   return (
     <div
-      className={`hand-matrix ${onSelect || onPointerDown ? "selectable" : "unselectable"}`}
+      className={`hand-matrix ${onPointerEnter || onPointerMove ? "no-scroll" : ""} ${onSelect || onPointerDown ? "selectable" : "unselectable"}`}
       onClick={comboEventDispatcher(onSelect)}
       onPointerUp={comboEventDispatcher(onPointerUp)}
       onPointerDown={comboEventDispatcher(onPointerDown)}
+      onPointerLeave={comboEventDispatcher(onPointerUp)}
       onPointerMove={comboEventDispatcher((combo) => {
         onPointerMove && onPointerMove(combo);
         if (combo !== currentlyPointingAt) {

@@ -5,6 +5,9 @@
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.hand-matrix.no-scroll {
   touch-action: none;
 }
 
@@ -22,10 +25,13 @@
 .hand-matrix-cell {
   border: 1px solid grey;
   display: inline-block;
-  touch-action: none;
   font-size: 1rem;
   width: 7.691%;
   overflow: hidden;
+}
+
+.hand-matrix.no-scroll .hand-matrix-cell{
+  touch-action: none;
 }
 
 @media screen and (max-width: 992px) {
